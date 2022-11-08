@@ -1,4 +1,4 @@
-module gotail
+module github.com/kordar/gotail
 
 go 1.16
 

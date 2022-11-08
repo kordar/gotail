@@ -20,10 +20,6 @@ func ReadByLine(filename string, offset int64, output func(string)) int64 {
 
 	defer f.Close()
 	r := bufio.NewReader(f)
-	info, err := f.Stat()
-	if err != nil {
-		panic(err)
-	}
 
 	for {
 		line, _, err := r.ReadLine()
@@ -32,6 +28,12 @@ func ReadByLine(filename string, offset int64, output func(string)) int64 {
 		} else {
 			output(string(line))
 		}
+	}
+
+	// TODO 注意f.Stat()返回顺序，需在处理句柄末端返回，防止并发问题产生。
+	info, err := f.Stat()
+	if err != nil {
+		panic(err)
 	}
 
 	return info.Size()
